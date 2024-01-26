@@ -1,0 +1,202 @@
+﻿*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Times New Roman", Times, serif;
+}
+a{
+    text-decoration:none;
+}
+/*===============================Index===========================*/
+#backtotop {
+    position: fixed;
+    bottom: 45px;
+    right: 45px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #6b6460;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 99999;
+    cursor:pointer;
+}
+#backtotop.show {
+    opacity: 0.6;
+    transition: 0.3s;
+}
+#backtotop i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.banner {
+    background-image: url(/Image/banner1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.sec-title {
+    font-size: 40px;
+    line-height: 50px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.sub-title {
+    font-size: 14px;
+    color: #cf9d6c;
+    line-height: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+
+.icon-box {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    position: relative;
+    font-size: 38px;
+    margin-bottom:15px;
+}
+
+.icon-box i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/*===============================In-dex===========================*/
+/*===============================DANG NHAP===========================*/
+.bg-dangnhap{
+    background-image: url(/Image/bg-khachsan.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+}
+/*===============================DANG-NHAP===========================*/
+
+/*===============================DANG KY===========================*/
+.bg-dangky {
+    background-image: url(/Image/bg-khachsan.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 700px;
+    display: flex;
+    align-items: center;
+}
+
+.form-dangky p {
+    width: 49%;
+    display: inline-grid;
+    padding: 0 10px;
+}
+
+.form-dangky p label{
+    padding: 0 0 10px 0;
+}
+
+.form-dangky p input{
+    width:100%;
+    border-radius:4px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+}
+/*===============================DANG-KY===========================*/
+
+/*===============================CA NHAN===========================*/
+/*.form-canhan div{
+    width:100%;
+    display:inline-block;
+}
+
+.form-canhan div label{
+    width: 49%;
+}*/
+/*===============================CA-NHAN===========================*/
+.menu-top {
+    background-color: #423A36;
+}
+
+.menu-top .menu-direct li a{
+    color:white;
+    font-weight:600;
+    text-transform:uppercase;
+}
+
+.menu-top .menu-direct li a:hover{
+    color:orangered;
+}
+
+/*=============================FOOTER=======================*/
+
+.footer {
+    background-color: #423a36;
+}
+
+.footer .footer-main{
+    padding:100px 0;
+    text-align:center;
+}
+
+.footer .footer-main .footer-item:not(:last-child) {
+    border-right: 1px solid #68615e;
+}
+
+.footer .footer-main .logo{
+    margin-bottom:50px;
+}
+
+.title{
+    color:white;
+    margin-bottom: 40px;
+}
+
+.address {
+    color: #c8c0b8;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.email {
+    color: #c8c0b8;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.title-infor {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.footer-list li a{
+    color: #c8c0b8;
+    font-size:14px;
+}
+
+.phonenumber {
+    font-size: 30px;
+    font-weight: 700;
+    color: #cf9d6c;
+}

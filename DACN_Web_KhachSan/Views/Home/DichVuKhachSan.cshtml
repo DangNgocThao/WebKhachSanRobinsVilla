@@ -1,0 +1,86 @@
+﻿
+@model IEnumerable<DACN_Web_KhachSan.Models.DICHVU>
+
+
+<section class="d-block">
+    <div style="padding: 100px 0">
+        <div class="container">
+            <div class="d-flex mb-3">
+                <h2 class="text-warning ">Dịch vụ của khách sạn Robins Villa</h2>
+
+            </div>
+
+
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-3 mb-4">
+                        <div class="card w-100">
+                            <img class="card-img-top" src="/Image/@item.HINH" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title fs-3">@item.TENDV</h5>
+                                <p class="card-text overflow-hidden"
+                                   style="
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+">@item.MOTA</p>
+    <a data-bs-toggle="modal" data-bs-target="#ModalChiTietDV" onclick="showDetails('@item.TENDV', '@item.MOTA', '@item.HINH', '@item.VITRI')" class="btn btn-outline-warning text-dark form-control">Xem chi tiết</a>
+    </div>
+    </div>
+    </div>
+}
+            </div>
+        </div>
+
+        <div class="modal fade" id="ModalChiTietDV" tabindex="-1" role="dialog" aria-labelledby="lbChiTietDV" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="col-8">
+                            <div id="hinhdv" class="h-100">
+
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="modal-header">
+                                <div id="lbChiTietDV"></div>
+                            </div>
+                            <div class="modal-body">
+                                <div id="motadv" style="font-size:14px">
+
+                                </div>
+                                <div id="vitridv" class="d-flex justify-content-between">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+        
+
+
+        <script>
+            function showDetails(TENDV, MOTA, HINH, VITRI) {
+                var tendv = document.getElementById('lbChiTietDV');
+                var motadv = document.getElementById('motadv');
+                var hinhdv = document.getElementById('hinhdv');
+                var vitridv = document.getElementById('vitridv');
+
+                tendv.innerHTML = '';
+                motadv.innerHTML = '';
+                hinhdv.innerHTML = '';
+
+                tendv.innerHTML = '<h5 class="modal-title">' + TENDV + '</h5>';
+                motadv.innerHTML = '<p>' + MOTA + '</p>';
+                vitridv.innerHTML = '<p><i class="fa-solid fa-location-dot"></i> Vị trí</p><p>Tầng ' + VITRI + '</p>'
+                hinhdv.innerHTML = '<img src="/Image/' + HINH + '" class="w-100 rounded h-100">'
+            }
+        </script>
+
+

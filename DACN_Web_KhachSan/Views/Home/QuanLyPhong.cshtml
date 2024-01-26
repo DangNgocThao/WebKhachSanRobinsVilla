@@ -1,0 +1,415 @@
+﻿@model IEnumerable<DACN_Web_KhachSan.Models.PHONG>
+@{
+    ViewBag.Title = "QuanLyPhong";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+    int count = 1;
+}
+
+<div class="container">
+    <h2 class="text-center mt-4 mb-4">Quản Lý Phòng</h2>
+    <div class="row">
+        <div class="col-8">
+            <button class="btn btn-outline-success mb-4" data-bs-toggle="modal" data-bs-target="#ModalThemPhong"><span><i class="fa-solid fa-plus"></i></span> Thêm phòng</button>
+        </div>
+        <div class="col-4">
+            <form method="post" class="form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="btnTim" name="tim" value="@ViewBag.tim">
+                    <button class="btn btn-outline-secondary" type="submit" id="btnTim"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalThemPhong" tabindex="-1" role="dialog" aria-labelledby="lbThemPhong" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lbThemPhong">Thêm phòng mới</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex">
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Tên phòng</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" id="tenphong" type="text" />
+                        </div>
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Loại phòng</label>
+                            @Html.DropDownList("MALH", (IEnumerable<SelectListItem>)ViewBag.LoaiPhong, new { @class = "w-100 h-50 pt-1 pb-1 ps-2 pe-2", @id = "loaiphong" })
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Người lớn</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" min="1" id="nguoilon" />
+                        </div>
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Trẻ em</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" min="0" id="treem" />
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Diện tích</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" min="1" id="dientich" />
+                        </div>
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Loại giường</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="text" id="loaigiuong" />
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-100 p-2">
+                            <label class="d-block mb-2">Giá tiền</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" id="giatien" />
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-100 p-2">
+                            <label class="d-block mb-2">Trạng thái</label>
+                            <select class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" id="trangthai">
+                                <option value="Hoạt động">Hoạt động</option>
+                                <option value="Bảo trì">Bảo trì</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-100 p-2">
+                            <label class="d-block mb-2">Hình phòng</label>
+                            <input class="w-100 h-50 pt-1 pb-1 pe-2" type="file" id="hinhphong" accept="image/*"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="themPhong()">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        @if (Model != null && Model.Count() > 0)
+        {
+            <div class="col table-responsive" style="height:500px">
+                <table class="table overflow-hidden table-bordered table-striped align-middle rounded table-hover">
+                    <tr class="text-center table-secondary">
+                        <th>STT</th>
+                        <th>Hình</th>
+                        <th>Tên phòng</th>
+                        <th>Loại phòng</th>
+                        <th>Giá tiền</th>
+                        <th>Người lớn</th>
+                        <th>Trẻ em</th>
+                        <th>Diện tích</th>
+                        <th>Giường</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        int g = (int)item.GIA;
+                        <tr>
+                            <td>
+                                @count
+                            </td>
+                            <td>
+                                <img class="rounded" style="width:200px" src="~/Image/@item.HINH" />
+                            </td>
+                            <td>
+                                @item.TENPHONG
+                            </td>
+                            <td>
+                                @item.LOAIPHONG.TENLOAI
+                            </td>
+                            <td>
+                                @g.ToString("N0")
+                            </td>
+                            <td>
+                                @item.NGUOILON
+                            </td>
+                            <td>
+                                @item.TREEM
+                            </td>
+                            <td>
+                                @item.DIENTICH
+                            </td>
+                            <td>
+                                @item.SOGIUONG
+                            </td>
+                            <td>
+                                @item.TRANGTHAI
+                            </td>
+                            <td class="text-center">
+                                <a data-bs-toggle="modal" data-id="@item.MAPHONG" data-bs-target="#ModalSuaPhong" class="btn btnSua text-warning me-2"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a data-bs-toggle="modal" data-id="@item.MAPHONG" data-phong="@item.TENPHONG" data-bs-target="#ModalXoaPhong" class="btn btnXoa text-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </table>
+            </div>
+        }
+        else
+        {
+            <h1 class="text-center">Không có phòng nào!</h1>
+        }
+    </div>
+    <div class="modal fade" id="ModalSuaPhong" tabindex="-1" role="dialog" aria-labelledby="lbSuaPhong" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lbSuaPhong">Chỉnh sửa thông tin phòng</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex">
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Tên phòng</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" id="tenphong2" type="text" />
+                            <input type="hidden" id="maphong" value="" />
+                        </div>
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Loại phòng</label>
+                            @Html.DropDownList("MALH", (IEnumerable<SelectListItem>)ViewBag.LoaiPhong, new { @class = "w-100 h-50 pt-1 pb-1 ps-2 pe-2", @id = "loaiphong2" })
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Người lớn</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" min="1" id="nguoilon2" />
+                        </div>
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Trẻ em</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" min="0" id="treem2" />
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Diện tích</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" min="1" id="dientich2" />
+                        </div>
+                        <div class="w-50 p-2">
+                            <label class="d-block mb-2">Loại giường</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="text" id="loaigiuong2" />
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-100 p-2">
+                            <label class="d-block mb-2">Giá tiền</label>
+                            <input class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" type="number" id="giatien2" />
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-100 p-2">
+                            <label class="d-block mb-2">Trạng thái</label>
+                            <select class="w-100 h-50 pt-1 pb-1 ps-2 pe-2" id="trangthai2">
+                                <option value="Hoạt động">Hoạt động</option>
+                                <option value="Bảo trì">Bảo trì</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="w-100 p-2">
+                            <label class="d-block mb-2">Hình phòng</label>
+                            <input class="w-100 h-50 pt-1 pb-1 pe-2" type="file" id="hinhphong2" accept="image/*"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="suaPhong()">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalXoaPhong" tabindex="-1" role="dialog" aria-labelledby="lbXoaPhong" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lbXoaPhong">Xóa phòng?</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Phòng <span class="fw-bold" id="tenPhongXoa"></span> sẽ bị xóa.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="XoaPhong">Xóa</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+
+        $('.btnSua').on('click', function () {
+            var id = $(this).data('id');
+            getPhongById(id);
+        });
+
+        $('.btnXoa').on('click', function () {
+            var id = $(this).data('id');
+            var tenPhong = $(this).data('phong');
+            $('#tenPhongXoa').text(tenPhong);
+            $('#XoaPhong').off('click').on('click', function () {
+                xoaPhong(id);
+            });
+        });
+
+        function xoaPhong(id) {
+            $.ajax({
+                url: '/Home/XoaPhong',
+                type: 'POST',
+                data: { id: id },
+                success: function (res) {
+                    if (res.success) {
+                        alert(res.message)
+                        location.reload(true)
+                    } else {
+                        alert(res.message)
+                    }
+                }
+            });
+
+        }
+
+        function validation(phongData) {
+            if (phongData.tenphong === '' || phongData.songuoi === '' || phongData.gia === '') {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return false;
+            }
+
+            var regex = /^\d+$/;
+            if (!regex.test(phongData.gia)) {
+                alert('Giá tiền không hợp lệ');
+                return false;
+            }
+
+            return true;
+        }
+
+        function suaPhong() {
+            var fileInput = $('#hinhphong2')[0];
+            var file = fileInput.files[0];
+
+            var fileName = file ? file.name : '';
+
+            var phongData = {
+                tenphong: $('#tenphong2').val(),
+                maloai: $('#loaiphong2').val(),
+                nguoilon: $('#nguoilon2').val(),
+                treem: $('#treem2').val(),
+                dientich: $('#dientich2').val(),
+                sogiuong: $('#loaigiuong2').val(),
+                gia: $('#giatien2').val(),
+                trangthai: $('#trangthai2').val(),
+                maphong: $('#maphong').val(),
+                hinh: fileName
+            };
+
+            if (!validation(phongData))
+                return;
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            for (var key in phongData) {
+                formData.append(key, phongData[key]);
+            }
+
+            $.ajax({
+                url: '/Home/SuaPhong',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.success) {
+                        $('#ModalSuaPhong').modal('hide');
+                        location.reload(true);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function themPhong() {
+            var fileInput = $('#hinhphong')[0];
+            var file = fileInput.files[0];
+
+            var fileName = file ? file.name : '';
+            if (fileName === '') {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            var phongData = {
+                tenphong: $('#tenphong').val(),
+                maloai: $('#loaiphong').val(),
+                nguoilon: $('#nguoilon').val(),
+                treem: $('#treem').val(),
+                dientich: $('#dientich').val(),
+                sogiuong: $('#loaigiuong').val(),
+                gia: $('#giatien').val(),
+                trangthai: $('#trangthai').val(),
+                maphong: $('#maphong').val(),
+                hinh: fileName
+            };
+
+            if (!validation(phongData))
+                return;
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            for (var key in phongData) {
+                formData.append(key, phongData[key]);
+            }
+
+            $.ajax({
+                url: '/Home/ThemPhong',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.success) {
+                        $('#ModalThemPhong').modal('hide');
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function getPhongById(id) {
+            $.ajax({
+                url: '/Home/GetPhongById/' + id,
+                type: 'GET',
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (res) {
+
+                    $('#tenphong2').val(res.data.TenPhong);
+                    $('#loaiphong2').val(res.data.MaLoai);
+                    $('#nguoilon2').val(res.data.NguoiLon);
+                    $('#treem2').val(res.data.TreEm);
+                    $('#dientich2').val(res.data.DienTich);
+                    $('#loaigiuong2').val(res.data.LoaiGiuong);
+                    $('#giatien2').val(res.data.GiaTien);
+                    $('#trangthai2').val(res.data.TrangThai);
+                    $('#maphong').val(res.data.Id)
+                }
+            })
+        }
+    </script>
+}

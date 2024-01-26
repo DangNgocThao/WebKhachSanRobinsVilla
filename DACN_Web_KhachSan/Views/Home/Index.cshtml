@@ -1,0 +1,214 @@
+﻿@using DACN_Web_KhachSan.Models;
+@model IEnumerable<LOAIPHONG>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+
+    TAIKHOANNV nv = (TAIKHOANNV)Session["nv"];
+}
+
+
+<section class="d-block">
+    <div class="container-fluid p-0 position-relative">
+        <div>
+            <img class="w-100" src="~/Image/banner.jpg" alt="Alternate Text" />
+        </div>
+        <div class="text-center text-white position-absolute w-100 top-50 start-50 translate-middle">
+            <div class="mb-3">LỰA CHỌN TỐT NHẤT CHO THƯ GIÃN</div>
+            <h1>ĐIỂM ĐẾN KỲ NGHỈ HOÀN HẢO</h1>
+        </div>
+    </div>
+</section>
+
+<section class="d-block">
+    <div style="padding: 100px 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="mb-5">
+                        <h2 class="sec-title">TẬN HƯỞNG KỲ NGHỈ CỦA BẠN</h2>
+                        <div class="sub-title">Giới thiệu về chúng tôi</div>
+                    </div>
+                    <h4 class="fw-bold mb-5">Robins Villa nằm ẩn dật giữa ba ngọn đồi ở thành phố Đà Lạt thuộc tỉnh Lâm Đồng.</h4>
+                    <p class="mb-5">
+                        Hãy thoát khỏi sự hối hả và rắc rối của thói quen hàng ngày và đến với Robins Villa,
+                        nơi một thế giới thanh bình đang chờ đợi bạn. Hãy vứt bỏ mọi lo lắng và hòa mình vào
+                        bầu không khí thư thái, thơ mộng và được nuông chiều và trẻ hóa. Hãy ngả lưng và tận
+                        hưởng dòng suối lâu năm tuyệt đẹp vuốt ve cảnh quan giữa các biệt thự, nhà tranh và lều
+                        trại và để mình được đưa đến một thiên đường được bao quanh bởi những ngọn đồi.
+                    </p>
+
+                    <div class="d-flex align-items-center mb-5">
+                        <div class="icon-box">
+                            <i class="fa-regular fa-star"></i>
+                        </div>
+                        <div class="fw-semibold">
+                            Sự hài lòng của khách hàng luôn ở mức cao kể từ năm 2017
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div class="fw-semibold">
+                            Khách sạn thuộc xếp hạng hàng đầu ở Đà Lạt, Việt Nam
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <img class="w-100 h-100" style="object-fit:cover" src="~/Image/Panoramicbedroom.png" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="d-block" style="background-color: #FBF6F2">
+    <div style="padding: 100px 0">
+        <div class="container">
+            <div class="d-flex">
+                <div class="w-50">
+                    <div class="mb-5">
+                        <h2 class="sec-title">NHỮNG NƠI GẦN ĐÂY</h2>
+                        <div class="sub-title">KHÁM PHÁ ĐỊA ĐIỂM TUYỆT VỜI VÀ ĐẸP</div>
+                    </div>
+                    <div class="fs-5 lh-2 pe-5">
+                        Có rất nhiều địa điểm thú vị để tham quan ở Đà Lạt. Toàn bộ khu vực là một thiên
+                        đường du lịch. Và nhà trọ của chúng tôi đóng vai trò là cửa ngõ dẫn đến tất cả những
+                        điểm nóng thú vị này.
+                    </div>
+                </div>
+                <div class="w-50">
+                    <div class="h-100">
+                        <img class="w-100" src="https://ik.imagekit.io/tvlk/blog/2023/01/canh-dep-da-lat-1.jpg?tr=dpr-2,w-675" alt="" style="object-fit:inherit;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <div class="w-50">
+                    <div class="w-100 h-100">
+                        <img class="w-100" src="~/Image/camnhi-da-lat.jpg" alt="" style="object-fit:cover" />
+                    </div>
+                </div>
+                <div class="w-50">
+                    <div class="d-flex mt-4">
+                        <div class="w-50" style="padding-left:70px">
+                            <img class="w-100 h-100" src="~/Image/tuong-da.jpg" alt="" style="object-fit:cover" />
+                        </div>
+                        <div class="w-50">
+                            <img class="w-100" src="~/Image/cay-co-don.jpg" alt="" style="object-fit: cover; transform: translateY(-150px);" />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="w-50">
+                            <img class="w-100" src="~/Image/nha-tho.jpg" alt="" style="object-fit:cover" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (nv == null)
+{
+    <section class="d-block">
+        <div style="padding-top: 100px">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="sec-title">LOẠI PHÒNG</h2>
+                    <div class="sub-title">Chọn để xem danh sách chi tiết phòng</div>
+                </div>
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-12 col-md-4 mb-3">
+                            <div class="text-center lh-lg bg-white" style="box-shadow: rgba(0, 0, 0, 0.15) 2px 0px 50px 0px;">
+                                <div class="position-relative">
+                                    <img src="~/Image/@item.HINH" alt="" style="max-width: 100%; height: 360px; object-fit: cover;" />
+                                    <h3 class="text-white text-center position-absolute w-100" style="bottom: 35px; z-index: 1;">@item.TENLOAI</h3>
+                                </div>
+                                <div class="p-4">
+                                    @foreach (var i in ViewBag.Gia)
+                                    {
+                                        if (i.MaLoai == item.MALOAI)
+                                        {
+                                            <div class="mb-4">CHỈ TỪ <span style="color: #cf9d6c;" class="fs-3">@i.GiaTien.ToString("N0") VNĐ</span> NGÀY</div>
+                                        }
+                                    }
+                                    <div><a class="chondatphong" data-bs-toggle="modal" data-lp="@item.TENLOAI" data-bs-target="#chonngay-@item.MALOAI">ĐẶT NGAY</a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="chonngay-@item.MALOAI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="modal-title" id="exampleModalLabel">
+                                            <h4>Khách sạn Ronbins Villa</h4>
+                                            <p style="color: #cf9d6c; font-size: 16px;" id="tenloaiphong"></p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="/Home/ChiTietPhong/@item.MALOAI">
+                                            <div class="row date-pair">
+                                                <div class="col-3">
+                                                    <label class="mb-2 fw-bold">Check-in</label>
+                                                    <input id="checkin2" name="checkin" class="checkin form-control" required />
+                                                </div>
+                                                <div class="col-3">
+                                                    <label class="mb-2 fw-bold">Check-out</label>
+                                                    <input id="checkout2" name="checkout" class="checkout form-control" required />
+                                                </div>
+                                                <div class="col-3">
+                                                    <label class="mb-2 fw-bold">Người lớn</label>
+                                                    <select class="form-control" name="nguoilon" required>
+                                                        @for (int i = 1; i <= 10; i++)
+                                                        {
+                                                            <option value="@i">@i</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label class="mb-2 fw-bold">Trẻ em</label>
+                                                    <select class="form-control" name="treem" required>
+                                                        @for (int i = 0; i <= 10; i++)
+                                                        {
+                                                            <option value="@i">@i</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-secondary mt-4" style="padding: 10px 20px">Tìm phòng</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@if (nv == null)
+{
+    @Html.Action("DichVuKhachSan", "Home")
+}
+
+@section scripts{
+    <script>
+        $('.chondatphong').on('click', function () {
+            var tenlp = $(this).data('lp');
+            $('#tenloaiphong').text(tenlp);
+        });
+    </script>
+}

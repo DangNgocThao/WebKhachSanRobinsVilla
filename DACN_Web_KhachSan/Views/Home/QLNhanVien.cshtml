@@ -1,0 +1,451 @@
+﻿@model IEnumerable<DACN_Web_KhachSan.Models.NHANVIEN>
+@{
+    ViewBag.Title = "QLNhanVien";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+    int count = 1;
+}
+
+
+<div class="container">
+    <h2 class="text-center mt-4 mb-4">Quản Lý Nhân Viên</h2>
+    <div class="row">
+        <div class="col-8">
+            <button class="btn btn-outline-success mb-4" data-bs-toggle="modal" data-bs-target="#ModalThemNhanVien"><span><i class="fa-solid fa-plus"></i></span> Thêm nhân viên</button>
+        </div>
+        <div class="col-4">
+            <form method="post" class="form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="btnTim" name="tim" value="@ViewBag.tim">
+                    <button class="btn btn-outline-secondary" type="submit" id="btnTim"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalThemNhanVien" tabindex="-1" role="dialog" aria-labelledby="lbThemNhanVien" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lbThemNhanVien">Thêm nhân viên mới</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-8 mb-3">
+                            <label for="hoten" class="form-label">Họ tên nhân viên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="hoten" name="hoten" required>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label class="d-block mb-1">Giới tính</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gioi" id="Nam" value="Nam" checked />
+                                <label class="form-check-label" for="Nam">Nam</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gioi" id="Nữ" value="Nữ" />
+                                <label class="form-check-label" for="Nữ">Nữ</label>
+                            </div>
+                        </div>
+                        <div class="col-5 mb-3">
+                            <label for="sdt" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="sdt" name="sdt" required>
+                        </div>
+                        <div class="col-7 mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="diaChi" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="diaChi" name="diaChi" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="chucvu" class="form-label">Chức vụ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="chucvu" name="chucvu" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="luong" class="form-label">Lương <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="luong" name="luong" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="ngayvaolam" class="form-label">Ngày vào làm <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="ngayvaolam" name="ngayvaolam" value="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="loaikh" class="form-label">Trạng thái</label>
+                            <select class="form-select" id="trangthai" name="trangthai" required>
+                                <option selected value="Hoạt động">Hoạt động</option>
+                                <option value="Nghỉ việc">Nghỉ việc</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="hinh" class="form-label">Hình <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="hinh" name="hinh" required accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="themNV()">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        @if (Model != null && Model.Count() > 0)
+        {
+            <div class="col table-responsive" style="height:500px">
+                <table class="table overflow-hidden table-bordered table-striped align-middle rounded table-hover">
+                    <tr class="text-center table-secondary">
+                        <th>STT</th>
+                        <th>Hình</th>
+                        <th>Họ tên nhân viên</th>
+                        <th>Giới tính</th>
+                        <th>Điện thoại</th>
+                        <th>Địa chỉ</th>
+                        <th>Email</th>
+                        <th>Ngày vào làm</th>
+                        <th>Chức vụ</th>
+                        <th>Lương</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        int g = (int)item.LUONG;
+                        <tr>
+                            <td>
+                                @count
+                            </td>
+                            <td>
+                                <img class="rounded" style="width:120px; height:120px" src="~/Image/@item.HINH" />
+                            </td>
+                            <td>
+                                @item.HOTENNV
+                            </td>
+                            <td>
+                                @item.GIOITINH
+                            </td>
+                            <td>
+                                @item.DIENTHOAI
+                            </td>
+                            <td>
+                                @item.DIACHI
+                            </td>
+                            <td>
+                                @item.EMAIL
+                            </td>
+                            <td>
+                                @item.NGAYVAOLAM.Value.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @item.CHUCVU
+                            </td>
+                            <td>
+                                @g.ToString("N0")
+                            </td>
+                            <td>
+                                @item.TRANGTHAI
+                            </td>
+                            <td class="text-center">
+                                <a data-bs-toggle="modal" data-id="@item.MANV" data-bs-target="#ModalSuaNV" class="btn btnSua text-warning me-2"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a data-bs-toggle="modal" data-id="@item.MANV" data-nv="@item.HOTENNV" data-bs-target="#ModalXoaNV" class="btn btnXoa text-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </table>
+            </div>
+        }
+        else
+        {
+            <h1 class="text-center">Không có nhân viên nào!</h1>
+        }
+    </div>
+
+    <div class="modal fade" id="ModalSuaNV" tabindex="-1" role="dialog" aria-labelledby="lbSuaNV" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lbSuaNV">Chỉnh sửa thông tin nhân viên</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-8 mb-3">
+                            <label for="hoten" class="form-label">Họ tên nhân viên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="suahoten" name="suahoten" required>
+                            <input type="hidden" name="suama" id="suama" />
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label class="d-block mb-1">Giới tính</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="suagioi" id="Nam" value="Nam" />
+                                <label class="form-check-label" for="Nam">Nam</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="suagioi" id="Nữ" value="Nữ" />
+                                <label class="form-check-label" for="Nữ">Nữ</label>
+                            </div>
+                        </div>
+                        <div class="col-5 mb-3">
+                            <label for="sdt" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="suasdt" name="suasdt" required>
+                        </div>
+                        <div class="col-7 mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="suaemail" name="suaemail" required>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="diaChi" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="suadiaChi" name="suadiaChi" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="chucvu" class="form-label">Chức vụ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="suachucvu" name="suachucvu" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="luong" class="form-label">Lương <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="sualuong" name="sualuong" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="ngayvaolam" class="form-label">Ngày vào làm <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="suangayvaolam" name="suangayvaolam" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="loaikh" class="form-label">Trạng thái</label>
+                            <select class="form-select" id="suatrangthai" name="suatrangthai" required>
+                                <option value="Hoạt động">Hoạt động</option>
+                                <option value="Nghỉ việc">Nghỉ việc</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="hinh" class="form-label">Hình</label>
+                            <input type="file" class="form-control" id="suahinh" name="suahinh" required accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="suaNV()">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalXoaNV" tabindex="-1" role="dialog" aria-labelledby="lbXoaNV" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lbXoaNV">Xóa nhân viên?</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Nhân viên <span class="fw-bold" id="tenNVXoa"></span> sẽ bị xóa.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="XoaNV">Xóa</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+        $('.btnSua').on('click', function () {
+            var id = $(this).data('id')
+            getNVById(id);
+        });
+
+        $('.btnXoa').on('click', function () {
+            var id = $(this).data('id')
+            var tenNV = $(this).data('nv');
+            $('#tenNVXoa').text(tenNV);
+            $('#XoaNV').off('click').on('click', function () {
+                xoaNV(id);
+            });
+        });
+
+        function getNVById(id) {
+            $.ajax({
+                url: '/Home/GetNVById',
+                type: 'GET',
+                data: { id: id },
+                success: function (res) {
+                    const timestamp = parseInt(res.data.NGAYVAOLAM.substr(6));
+                    const dateObject = new Date(timestamp);
+                    const year = dateObject.getFullYear();
+                    const month = ('0' + (dateObject.getMonth() + 1)).slice(-2);
+                    const day = ('0' + dateObject.getDate()).slice(-2);
+                    const formattedDate = `${year}-${month}-${day}`;
+
+                    $('input[name="suama"]').val(res.data.MANV);
+                    $('input[name="suahoten"]').val(res.data.HOTENNV);
+                    $('input[name="suasdt"]').val(res.data.DIENTHOAI);
+                    $('input[name="suadiaChi"]').val(res.data.DIACHI);
+                    $('input[name="suaemail"]').val(res.data.EMAIL);
+                    $('input[name="suachucvu"]').val(res.data.CHUCVU);
+                    $('input[name="sualuong"]').val(res.data.LUONG);
+                    $('input[name="suangayvaolam"]').val(formattedDate);
+                    $('select[name="suatrangthai"] option:contains("' + res.data.TRANGTHAI + '")').prop('selected', true);
+                    $('input[name="suagioi"][value="' + res.data.GIOITINH + '"]').prop('checked', true);
+                }
+            })
+        }
+
+        function themNV() {
+            var fileInput = $('#hinh')[0];
+            var file = fileInput.files[0];
+
+            var fileName = file ? file.name : '';
+            if (fileName === '') {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            var nv = {
+                HOTENNV: $('[name="hoten"]').val(),
+                GIOITINH: $('[name="gioi"]:checked').val(),
+                DIENTHOAI: $('[name="sdt"]').val(),
+                DIACHI: $('[name="diaChi"]').val(),
+                EMAIL: $('[name="email"]').val(),
+                TRANGTHAI: $('[name="trangthai"]').val(),
+                LUONG: $('[name="luong"]').val(),
+                CHUCVU: $('[name="chucvu"]').val(),
+                HINH: fileName,
+                NGAYVAOLAM: $('[name="ngayvaolam"]').val(),
+            };
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            for (var key in nv) {
+                formData.append(key, nv[key]);
+            }
+
+            if (!validation(nv))
+                return;
+
+            $.ajax({
+                url: '/Home/ThemNV',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.success) {
+                        $('#ModalThemNhanVien').modal('hide');
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function suaNV() {
+            var fileInput = $('#suahinh')[0];
+            var file = fileInput.files[0];
+
+            var fileName = file ? file.name : '';
+
+            var nv = {
+                MANV: $('[name="suama"]').val(),
+                HOTENNV: $('[name="suahoten"]').val(),
+                GIOITINH: $('[name="suagioi"]:checked').val(),
+                DIENTHOAI: $('[name="suasdt"]').val(),
+                DIACHI: $('[name="suadiaChi"]').val(),
+                EMAIL: $('[name="suaemail"]').val(),
+                TRANGTHAI: $('[name="suatrangthai"]').val(),
+                LUONG: $('[name="sualuong"]').val(),
+                CHUCVU: $('[name="suachucvu"]').val(),
+                HINH: fileName,
+                NGAYVAOLAM: $('[name="suangayvaolam"]').val(),
+            };
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            for (var key in nv) {
+                formData.append(key, nv[key]);
+            }
+
+            if (!validation(nv))
+                return;
+
+            $.ajax({
+                url: '/Home/SuaNV',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.success) {
+                        $('#ModalSuaNV').modal('hide');
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function xoaNV(id) {
+            $.ajax({
+                url: '/Home/XoaNV',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    if (result.success) {
+                        alert(result.message);
+                        location.reload(true)
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function validation(nv) {
+            if (nv.HOTENNV === '' || nv.EMAIL === '' || nv.DIENTHOAI === '' || nv.DIACHI === '' || nv.CHUCVU === '' || nv.LUONG === '' || nv.NGAYVAOLAM === '') {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return false;
+            }
+
+            // Check phone number format
+            var phoneRegex = /^0[0-9]{9}$/;
+            if (!phoneRegex.test(nv.DIENTHOAI)) {
+                alert('Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có 10 chữ số.');
+                return false;
+            }
+
+            // Check email format
+            var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+            if (!emailRegex.test(nv.EMAIL)) {
+                alert('Email không hợp lệ! Vui lòng nhập địa chỉ email đúng định dạng.');
+                return false;
+            }
+
+            var regex = /^\d+$/;
+            if (!regex.test(nv.LUONG)) {
+                alert('Lương không hợp lệ');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+}
+

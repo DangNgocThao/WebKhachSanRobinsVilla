@@ -1,0 +1,183 @@
+﻿@model IEnumerable<DACN_Web_KhachSan.Models.LOAIPHONG>
+
+@{
+    ViewBag.Title = "Booking";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+
+<section class="d-block">
+    <div class="container-fluid p-0 position-relative">
+        <div>
+            <img class="w-100" src="~/Image/bg-lienhe.jpg" alt="Alternate Text" />
+        </div>
+        <div class="text-center text-white position-absolute w-100 top-50 start-50 translate-middle">
+            <h1 style="font-size:68px">ĐẶT PHÒNG</h1>
+        </div>
+    </div>
+</section>
+
+<section class="d-block">
+    <div class="container">
+        <form method="post" action="/Home/KetQuaTimPhong" style="position: relative; margin-top: -80px; box-shadow: 0px 8px 17px 2px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12), 0px 5px 5px -3px rgba(0, 0, 0, 0.2); background-color: #faf6f1; padding: 35px">
+            <h2 class="text-center mb-5">PHÒNG CÓ SẴN</h2>
+            <div class="row date-pair">
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Check-in</label>
+                    <input id="checkin" name="checkin" class="checkin form-control" required />
+                </div>
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Check-out</label>
+                    <input id="checkout" name="checkout" class="checkout form-control" required />
+                </div>
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Người lớn</label>
+                    <select class="form-control" name="nguoilon" required>
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Trẻ em</label>
+                    <select class="form-control" name="treem" required>
+                        @for (int i = 0; i <= 10; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-secondary mt-4" style="padding: 10px 20px">Tìm phòng</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section>
+    @if (ViewBag.listphong != null)
+    {
+        <div class="container">
+            @foreach (var item in ViewBag.listphong)
+            {
+                <div class="row bg-white p-3 mt-4 rounded" style="box-shadow: rgba(0, 0, 0, 0.15) 2px 0px 50px 0px;">
+                    <div class="col-2">
+                        <img src="~/Image/@item.HINH" alt="" class="rounded" style="max-width: 100%; height: auto; object-fit: cover;" />
+                    </div>
+                    <div class="col-10">
+                        <div class="">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <p class="fs-3">@item.TENPHONG</p>
+                                <p class="text-danger fs-4 fw-bold">@item.GIA.ToString("N0") VNĐ</p>
+                            </div>
+                            <div class="d-flex justify-content-between" style="font-size:16px">
+                                <p><i class="fa-solid fa-user"></i> Người lớn: @item.NGUOILON</p>
+                                <p><i class="fa-solid fa-child"></i>   Trẻ em: @item.TREEM</p>
+                                <p><i class="fa-solid fa-expand"></i> @item.DIENTICH m<sub style="top:-0.5rem">2</sub></p>
+                                <p><i class="fa-solid fa-bed"></i> @item.SOGIUONG</p>
+                            </div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <a data-bs-target="#chitietphong" data-bs-toggle="modal" href="#">Chi tiết</a>
+                                <button class="btn btn-warning">Chọn phòng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>
+
+
+<section class="d-block">
+    <div style="padding: 100px 0">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="sec-title">LOẠI PHÒNG</h2>
+                <div class="sub-title">Chọn để xem danh sách chi tiết phòng</div>
+            </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="text-center lh-lg bg-white" style="box-shadow: rgba(0, 0, 0, 0.15) 2px 0px 50px 0px;">
+                            <div class="position-relative">
+                                <img src="~/Image/@item.HINH" alt="" style="max-width: 100%; height: 360px; object-fit: cover;" />
+                                <h3 class="text-white text-center position-absolute w-100" style="bottom: 35px; z-index: 1;">@item.TENLOAI</h3>
+                            </div>
+                            <div class="p-4">
+                                @foreach (var i in ViewBag.Gia)
+                                {
+                                    if (i.MaLoai == item.MALOAI)
+                                    {
+                                        <div class="mb-4">CHỈ TỪ <span style="color: #cf9d6c;" class="fs-3">@i.GiaTien.ToString("N0") VNĐ</span> NGÀY</div>
+                                    }
+                                }
+                                <div><a class="chondatphong btn text-primary" data-bs-toggle="modal" data-lp="@item.TENLOAI" data-bs-target="#chonngay-@item.MALOAI">ĐẶT NGAY</a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="chonngay-@item.MALOAI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="modal-title" id="exampleModalLabel">
+                                        <h4>Khách sạn Ronbins Villa</h4>
+                                        <p style="color: #cf9d6c; font-size: 16px;" id="tenloaiphong"></p>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="/Home/ChiTietPhong/@item.MALOAI">
+                                        <div class="row date-pair">
+                                            <div class="col-3">
+                                                <label class="mb-2 fw-bold">Check-in</label>
+                                                <input id="checkin2" name="checkin" class="checkin form-control" required />
+                                            </div>
+                                            <div class="col-3">
+                                                <label class="mb-2 fw-bold">Check-out</label>
+                                                <input id="checkout2" name="checkout" class="checkout form-control" required />
+                                            </div>
+                                            <div class="col-3">
+                                                <label class="mb-2 fw-bold">Người lớn</label>
+                                                <select class="form-control" name="nguoilon" required>
+                                                    @for (int i = 1; i <= 10; i++)
+                                                    {
+                                                        <option value="@i">@i</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-3">
+                                                <label class="mb-2 fw-bold">Trẻ em</label>
+                                                <select class="form-control" name="treem" required>
+                                                    @for (int i = 0; i <= 10; i++)
+                                                    {
+                                                        <option value="@i">@i</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-secondary mt-4" style="padding: 10px 20px">Tìm phòng</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section scripts{
+    <script>
+        $('.chondatphong').on('click', function () {
+            var tenlp = $(this).data('lp');
+            $('#tenloaiphong').text(tenlp);
+        });
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "DangKy";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+
+<div class="bg-dangky">
+    <div class="container">
+        <form action="/Home/DangKy" method="post" class="form-dangky rounded m-auto w-50 p-3" style="background-color: rgba(255, 255, 255, 0.8);">
+            <h3 class="text-center mb-4">Đăng ký thành viên mới</h3>
+
+            <p>
+                <label for="HoTen">Họ và tên <span class="text-danger">*</span></label>
+                <input id="HoTen" type="text" name="HoTen" value="" required />
+            </p>
+            <p>
+                <label for="Email">Email <span class="text-danger">*</span></label>
+                <input id="Email" type="email" name="Email" value="" required />
+                <span style="color:red; font-size:14px;">@ViewBag.email</span>
+            </p>
+            <p>
+                <label for="DienThoai">Điện thoại <span class="text-danger">*</span></label>
+                <input id="DienThoai" type="text" name="DienThoai" value="" required />
+                <span style="color:red; font-size:14px;">@ViewBag.dt</span>
+            </p>
+            <p>
+                <label for="DiaChi">Địa chỉ <span class="text-danger">*</span></label>
+                <input id="DiaChi" type="text" name="DiaChi" value="" required />
+            </p>
+            <p>
+                <label for="MatKhau">Mật khẩu <span class="text-danger">*</span></label>
+                <input id="MatKhau" type="password" name="MatKhau" value="" required />
+            </p>
+            <p>
+                <label for="NlMatKhau">Nhập lại mật khẩu <span class="text-danger">*</span></label>
+                <input id="NlMatKhau" type="password" name="NlMatKhau" value="" required />
+                <span style="color:red; font-size:14px;">@ViewBag.mk</span>
+            </p>
+
+            <div class="p-2">
+                <label>
+                    <input type="radio" name="GioiTinh" value="Nam" checked> Nam
+                </label>
+
+                <label class="ms-2">
+                    <input type="radio" name="GioiTinh" value="Nữ"> Nữ
+                </label>
+
+                <button type="submit" class="btn btn-primary btn-block mt-3 form-control">Đăng Ký</button>
+
+                <h5 style="color:red; font-size:14px;" class="text-center mt-3">@ViewBag.error</h5>
+            </div>
+        </form>
+    </div>
+</div>
+

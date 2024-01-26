@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "DoiMatKhau";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+
+<div class="container d-flex align-items-center" style="height:500px">
+    <form action="/Home/DoiMatKhau" method="post" class="p-3 w-25 rounded border m-auto" style="background-color: rgba(255, 255, 255, 0.5);">
+        <h2 class="mb-4">Thay đổi mật khẩu</h2>
+        <p>
+            <label class="d-block mb-1 text-capitalize" for="matkhauhientai">Mật khẩu hiện tại</label>
+            <input class="pt-1 pb-1 ps-2 pe-2 w-100" id="matkhauhientai" type="password" name="matkhauhientai" value="" required />
+            <span style="color:red; font-size:14px;">@ViewBag.er1</span>
+        </p>
+        <p>
+            <label class="d-block mb-1 text-capitalize" for="matkhaumoi">mật khẩu mới</label>
+            <input class="pt-1 pb-1 ps-2 pe-2 w-100" id="matkhaumoi" type="password" name="matkhaumoi" value="" required />
+        </p>
+        <p>
+            <label class="d-block mb-1 text-capitalize" for="xnmatkhaumoi">xác nhận mật khẩu mới</label>
+            <input class="pt-1 pb-1 ps-2 pe-2 w-100" id="xnmatkhaumoi" type="password" name="xnmatkhaumoi" value="" required />
+            <span style="color:red; font-size:14px;">@ViewBag.er2</span>
+        </p>
+
+        <button type="submit" class="btn text-capitalize rounded-0 text-white" style="background-color: #10BC84">Đổi mật khẩu</button>
+    </form>
+</div>

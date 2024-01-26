@@ -1,0 +1,56 @@
+﻿@model DACN_Web_KhachSan.Models.KHACHHANG
+@using DACN_Web_KhachSan.Models;
+
+@{
+    ViewBag.Title = "ChinhSuaThongTin";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+    TAIKHOANKH t = (TAIKHOANKH)Session["kh"];
+    string gioi = t.KHACHHANG.GIOITINH;
+}
+
+<h4 class="text-center mt-3">Chỉnh Sửa Thông Tin Cá Nhân</h4>
+<div class="container mb-4">
+    <form class="row w-50 m-auto border rounded" method="post">
+
+        <div class="col-6 mt-4">
+            <label for="hoten" class="form-label">Họ tên khách hàng <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="hoten" name="hoten" value="@t.KHACHHANG.HOTENKH" required>
+        </div>
+        <div class="col-6 mt-4">
+            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" name="email" value="@t.KHACHHANG.EMAIL" required>
+            <span style="color:red; font-size:14px;">@ViewBag.email</span>
+        </div>
+
+        <div class="col-4 mt-4">
+            <label for="sdt" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="sdt" name="sdt" value="@t.KHACHHANG.DIENTHOAI" required>
+            <span style="color:red; font-size:14px;">@ViewBag.dt</span>
+        </div>
+        <div class="col-8 mt-4">
+            <label for="diaChi" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="diaChi" name="diaChi" value="@t.KHACHHANG.DIACHI" required>
+        </div>
+
+        <div class="col-12 mt-4">
+            <label class="d-block mb-1">Giới tính</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gioi" id="Nam" value="Nam" @(gioi == "Nam" ? "checked" : "")>
+                <label class="form-check-label" for="Nam">Nam</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gioi" id="Nữ" value="Nữ" @(gioi == "Nữ" ? "checked" : "")>
+                <label class="form-check-label" for="Nữ">Nữ</label>
+            </div>
+        </div>
+
+        <div class="col-6 mt-2 mb-2 ">
+            <span style="color:red; font-size:14px;">@ViewBag.error</span>
+        </div>
+        <div class="col-6 mt-2 mb-2 d-flex justify-content-end">
+            <button type="submit" class="btn btn-success me-2">Lưu</button>
+            <a href="/Home/TrangCaNhan" class="btn btn-danger">Hủy</a>
+        </div>
+
+    </form>
+</div>

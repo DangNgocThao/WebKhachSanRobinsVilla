@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "TrangCaNhan";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+@using DACN_Web_KhachSan.Models;
+@{
+    TAIKHOANKH kh = (TAIKHOANKH)Session["kh"];
+}
+
+<div class="container mt-5 mb-5">
+    <table class="table table-bordered w-50 m-auto">
+        <thead>
+            <tr>
+                <th colspan="2" class="text-center">Thông Tin Cá Nhân</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Họ và Tên</td>
+                <td>@kh.KHACHHANG.HOTENKH</td>
+            </tr>
+            <tr>
+                <td>Giới tính</td>
+                <td>@kh.KHACHHANG.GIOITINH</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>@kh.KHACHHANG.EMAIL</td>
+            </tr>
+            <tr>
+                <td>Điện Thoại</td>
+                <td>@kh.KHACHHANG.DIENTHOAI</td>
+            </tr>
+            <tr>
+                <td>Địa Chỉ</td>
+                <td>@kh.KHACHHANG.DIACHI</td>
+            </tr>
+            <tr>
+                <td>Mật Khẩu</td>
+                <td>********</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a class="btn btn-primary" href="/Home/DoiMatKhau">Đổi Mật Khẩu</a>
+                    <a class="btn btn-warning ms-3" href="/Home/ChinhSuaThongTin">Chỉnh sửa thông tin</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

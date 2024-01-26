@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "SaoLuuPhucHoi";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+
+<h2 class="text-center">Sao lưu và phục hồi</h2>
+<div class="container">
+    <form class="m-auto">
+    </form>
+    <div class="row">
+        <div class="col p-4">
+
+            <div class="w-50 m-auto">
+                <label class="me-4">
+                    <input type="radio" name="SaoLuuPhucHoi" value="SaoLuu" checked onclick="showForm(1)" /> Sao lưu
+                </label>
+                <label>
+                    <input type="radio" name="SaoLuuPhucHoi" value="PhucHoi" onclick="showForm(2)" /> Phục Hồi
+                </label>
+                <fieldset class="w-100 mt-3" id="form1">
+                    <legend class="fs-5">SAO LƯU DỮ LIỆU</legend>
+                    <table class="table table-borderless">
+                        <tr>
+                            <td></td>
+                            <td>Lưu lại dữ liệu hiện có trên hệ thống để phục hồi xem lại khi cần</td>
+                        </tr>
+                        <tr>
+                            <td>Tên tệp <span class="text-danger">*</span></td>
+                            <td><input type="text" value="Backup.bak" name="tentep" placeholder="Tên tệp" class="form-control" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button onclick="saoLuu()" class="btn btn-info pt-1 pb-1 ps-4 pe-4">Sao lưu</button></td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <fieldset class="w-100 mt-3" id="form2" style="display:none">
+                    <legend class="fs-5">PHỤC HỒI DỮ LIỆU</legend>
+                    <i>Để phục hồi dữ liệu đã sao lưu, vui lòng làm theo 2 bước:</i>
+                    <ul>
+                        <li>Chọn tệp phục hồi</li>
+                        <li>Nhấn nút Phục hồi</li>
+                    </ul>
+
+                    <div class="d-flex flex-column">
+                        <input type="file" name="file" id="file" class="form-control" required accept=".bak" />
+
+                    </div>
+                    <button onclick="phucHoi()" class="btn btn-info pt-1 pb-1 ps-4 pe-4 mt-3">Phục hồi</button>
+                </fieldset>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        function showForm(val) {
+            if (val == 1) {
+                document.getElementById('form1').style.display = 'block';
+                document.getElementById('form2').style.display = 'none';
+            }
+            if (val == 2) {
+                document.getElementById('form2').style.display = 'block';
+                document.getElementById('form1').style.display = 'none';
+            }
+        }
+
+        function saoLuu() {
+            var tentep = $('input[name="tentep"]').val();
+            $.ajax({
+                url: '/Home/SaoLuu',
+                type: 'POST',
+                data: { tentep: tentep },
+                success: function (res) {
+                    if (res.success) {
+                        var actionUrl = "@Url.Action("TaiFileBackup", "Home")" + "?tentep=" + tentep;
+                        window.location.href = actionUrl;
+                        alert('Sao lưu thành công!');
+                    } else {
+                        alert('Sao lưu thất bại!');
+                    }
+                },
+                error: function () {
+                    console.error("Không gửi được!");
+                }
+            })
+        }
+
+        function phucHoi() {
+            var fileInput = $('#file')[0];
+            var file = fileInput.files[0];
+
+            var fileName = file ? file.name : '';
+            if (fileName === '') {
+                alert('Vui lòng chọn file!');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('file', file);
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }
+
+            $.ajax({
+                url: '/Home/PhucHoi',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    if (res.success) {
+                        alert('Phục hồi thành công!');
+                    } else {
+                        alert('Phục hồi thất bại!');
+                    }
+                },
+                error: function () {
+                    console.error("Không gửi được!");
+                }
+            });
+        }
+    </script>
+}

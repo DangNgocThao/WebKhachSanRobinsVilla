@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "ThongKe";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+
+<h2 class="text-center mt-4">Thống Kê Doanh Thu</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="form-group">
+                    <label class="d-block">Từ ngày</label>
+                    <input type="text" name="fromDate" value="" class="bd" />
+                </div>
+                <div class="form-group">
+                    <label class="d-block">Đến ngày</label>
+                    <input type="text" name="toDate" value="" class="kt" />
+                </div>
+                <div class="form-group mt-3">
+                    <button id="btn" onclick="thucThi()" class="btn btn-info">Thực thi</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group text-end">
+                <button onclick="xuathongkeOnClick()" class="btn btn-info">Xuất Excel</button>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <canvas id="revenueChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+
+    <script>
+        function xuathongkeOnClick() {
+            var startDate = flatpickr.formatDate(startDatePicker.selectedDates[0], "Y-m-d");
+            var endDate = flatpickr.formatDate(endDatePicker.selectedDates[0], "Y-m-d");
+
+            var actionUrl = "@Url.Action("XuatThongKe", "Home")" + "?bd=" + startDate + "&kt=" + endDate;
+
+            window.location.href = actionUrl;
+        }
+    </script>
+
+
+    <script>
+        const startDateInput = $(".bd");
+        const endDateInput = $(".kt");
+
+        const startDatePicker = flatpickr(startDateInput, {
+            onChange: function (selectedDates) {
+                if (endDatePicker.selectedDates.length === 0 || endDatePicker.selectedDates[0] < selectedDates[0]) {
+                    endDatePicker.setDate(selectedDates[0]);
+                }
+                endDatePicker.set("minDate", selectedDates[0]);
+            },
+            "locale": "vn",
+            dateFormat: "d-m-Y"
+        });
+
+        const endDatePicker = flatpickr(endDateInput, {
+            "locale": "vn",
+            dateFormat: "d-m-Y"
+        });
+    </script>
+
+    <script>
+        var chart;
+
+        function thucThi() {
+            if (chart) {
+                chart.destroy();
+            }
+
+            var obj = {
+                bd: flatpickr.formatDate(startDatePicker.selectedDates[0], "Y-m-d"),
+                kt: flatpickr.formatDate(endDatePicker.selectedDates[0], "Y-m-d")
+            }
+
+            $.ajax({
+
+                url: '/Home/GetDoanhThuLoai',
+                type: 'POST',
+                data: obj,
+                success: function (res) {
+                    var ctx = document.getElementById('revenueChart').getContext('2d');
+                    var labels = [];
+                    var data = [];
+
+                    $.each(res.data, function (i, item) {
+                        labels.push(item.TENLOAI);
+                        data.push(item.DOANHTHULOAI);
+                    })
+
+                    var colors = generateRandomColors(labels.length);
+
+                    var datasets = labels.map(function (label, index) {
+                        return {
+                            label: label,
+                            data: [data[index]],
+                            backgroundColor: [colors[index]],
+                            borderColor: [colors[index]],
+                            borderWidth: 1
+                        };
+                    });
+
+                    chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [''],
+                            datasets: datasets
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Doanh thu loại phòng',
+                                    font: {
+                                        size: 16
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function generateRandomColors(count) {
+            var colors = [];
+            for (var i = 0; i < count; i++) {
+                var color = 'rgba(' + getRandomInt(0, 255) + ',' + getRandomInt(0, 255) + ',' + getRandomInt(0, 255) + ',0.5)';
+                colors.push(color);
+            }
+            return colors;
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    </script>
+}

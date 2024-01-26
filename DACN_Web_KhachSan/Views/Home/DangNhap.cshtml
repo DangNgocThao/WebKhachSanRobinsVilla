@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "DangNhap";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+
+<div class="bg-dangnhap">
+    <div class="container">
+        <form action="/Home/XuLyDangNhap" method="post" class="p-3 w-25 rounded m-auto" style="background-color: rgba(255, 255, 255, 0.5);">
+
+            <h3 class="text-center mb-4">Welcome</h3>
+
+            <label class="form-label" for="loginName">Điện thoại</label>
+            <input type="text" id="loginName" name="txtDienThoai" class="form-control mb-3" />
+
+            <label class="form-label" for="loginPassword">Mật khẩu</label>
+            <input type="password" id="loginPassword" name="txtMatKhau" class="form-control mb-3" />
+
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-check mb-3 mb-md-0">
+                        <input class="form-check-input" type="checkbox" value="nhanvien" name="nhanvien" id="nhanvien" />
+                        <label class="form-check-label" for="nhanvien"> Nhân viên </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-3 form-control">Đăng nhập</button>
+
+            <div class="text-center">
+                <p>Chưa có tài khoản? <a href="/Home/DangKy">Đăng ký</a></p>
+            </div>
+            <p class="text-center text-danger">@ViewBag.kq</p>
+        </form>
+    </div>
+</div>
+

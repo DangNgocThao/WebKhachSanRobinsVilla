@@ -1,0 +1,120 @@
+﻿@using DACN_Web_KhachSan.Models;
+@{
+    ViewBag.Title = "GioHang";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+    List<DATPHONG> dsdp = (List<DATPHONG>)Session["gh"];
+    int stt = 1;
+    int thanhtien = 0;
+}
+
+<h2 class="text-center mt-4 mb-4">Giỏ Hàng</h2>
+
+<div class="container">
+    <div class="row mb-3">
+        @if (dsdp != null && dsdp.Count() > 0)
+        {
+            <div class="col table-responsive" style="height:500px">
+                <table class="table overflow-hidden table-bordered table-striped align-middle rounded table-hover">
+                    <tr class="table-secondary text-center">
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Tên phòng
+                        </th>
+                        <th>
+                            Ngày đặt
+                        </th>
+                        <th>
+                            Ngày nhận phòng
+                        </th>
+                        <th>
+                            Ngày trả phòng
+                        </th>
+                        <th>
+                            Tổng tiền
+                        </th>
+                        <th>Hàng động</th>
+                    </tr>
+
+                    @foreach (var item in dsdp)
+                    {
+                        int g = (int)item.TONGTIEN;
+                        <tr>
+                            <td class="text-center">
+                                @stt
+                            </td>
+                            <td>
+                                @foreach (PHONG i in ViewBag.dsp)
+                                {
+                                    if (item.MAPHONG == i.MAPHONG)
+                                    {
+                                        <span>@i.TENPHONG</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @String.Format("{0:dd/MM/yyyy}", item.NGAYDAT)
+                            </td>
+                            <td>
+                                @String.Format("{0:dd/MM/yyyy}", item.NGAYNHANPHONG)
+                            </td>
+                            <td>
+                                @String.Format("{0:dd/MM/yyyy}", item.NGAYTRAPHONG)
+                            </td>
+                            <td>
+                                @g.ToString("N0")
+                            </td>
+                            <td class="text-center">
+                                <a data-id="@item.MAPHONG" class="btn text-danger btnXoa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        stt++;
+                        thanhtien += (int)item.TONGTIEN;
+                    }
+                </table>
+                <div class="mt-3 text-end">
+                    <b>Thành tiền: </b>@thanhtien.ToString("N0") VNĐ
+                    <div class="d-flex justify-content-end mt-3">
+                        @if (Session["kh"] != null)
+                        {
+                            <a href="/Home/ThanhToanMoMo" class="btn btn-success ms-3 btnXoa"> <img width="20" height="20" src="~/Image/icon-momo.jpg" /> Thanh toán MoMo</a>
+                            <a href="/Home/ThanhToanVNPAY" class="btn btn-success ms-3 btnXoa"> <img width="20" height="20" src="~/Image/icon-vnpay.png" /> Thanh toán VNPAY</a>
+                        }
+                        else
+                        {
+                            <a href="/Home/DienThongTinKH?loaitt=1" class="btn btn-success ms-3 btnXoa"> <img width="20" height="20" src="~/Image/icon-momo.jpg" /> Thanh toán MoMo</a>
+                            <a href="/Home/DienThongTinKH?loaitt=2" class="btn btn-success ms-3 btnXoa"> <img width="20" height="20" src="~/Image/icon-vnpay.png" /> Thanh toán VNPAY</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h1 class="text-center">Bạn chưa đặt phòng nào!</h1>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.btnXoa').on('click', function () {
+            var id = $(this).data('id')
+            xoaGH(id);
+        });
+
+        function xoaGH(id) {
+            $.ajax({
+                url: '/Home/xoaGH',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    if (result.success) {
+                        location.reload(true)
+                    }
+                }
+            });
+        }
+    </script>
+}

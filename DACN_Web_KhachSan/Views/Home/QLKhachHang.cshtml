@@ -1,0 +1,372 @@
+﻿@model IEnumerable<DACN_Web_KhachSan.Models.KHACHHANG>
+
+@{
+    ViewBag.Title = "DanhSachKH";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+    int stt = 1;
+}
+
+<h2 class="text-center mt-4 mb-4">Danh Sách Khách Hàng</h2>
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-8">
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#them"><i class="fa-solid fa-plus"></i> Thêm khách hàng mới</button>
+        </div>
+        <div class="col-4">
+            <form method="post" class="form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="btnTim" name="tim" value="@ViewBag.tim">
+                    <button class="btn btn-outline-secondary" type="submit" id="btnTim"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mb-3">
+        @if (Model != null && Model.Count() > 0)
+        {
+            <div class="col table-responsive" style="height:700px">
+                <table class="table overflow-hidden table-bordered table-striped align-middle rounded table-hover">
+                    <tr class="table-secondary text-center">
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Họ tên khách hàng
+                        </th>
+                        <th>
+                            Giới tính
+                        </th>
+                        <th>
+                            Số điện thoại
+                        </th>
+                        <th>
+                            Địa chỉ
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Loại khách hàng
+                        </th>
+                        <th>
+                            Hàng động
+                        </th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @stt
+                            </td>
+                            <td>
+                                @item.HOTENKH
+                            </td>
+                            <td>
+                                @item.GIOITINH
+                            </td>
+                            <td>
+                                @item.DIENTHOAI
+                            </td>
+                            <td>
+                                @item.DIACHI
+                            </td>
+                            <td>
+                                @item.EMAIL
+                            </td>
+                            <td>
+                                @item.LOAIKH
+                            </td>
+                            <td class="text-center">
+                                <a data-bs-toggle="modal" data-id="@item.MAKH" data-bs-target="#sua" class="btn me-2 text-warning btnSua"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a data-bs-toggle="modal" data-id="@item.MAKH" data-kh="@item.HOTENKH" data-bs-target="#xoa" class="btn text-danger btnXoa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        stt++;
+                    }
+
+                </table>
+            </div>
+        }
+        else
+        {
+            <h1 class="text-center">Không có khách hàng nào!</h1>
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="them" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row">
+                    <div class="col-6 mt-4">
+                        <label for="hoten" class="form-label">Họ tên khách hàng <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="hoten" name="hoten" required>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+
+                    <div class="col-6 mt-4">
+                        <label for="sdt" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="sdt" name="sdt" required>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <label for="loaikh" class="form-label">Loại khách hàng</label>
+                        <select class="form-select" id="loaikh" name="loaikh" required>
+                            <option selected value="Du khách">Du khách</option>
+                            <option value="Doanh nghiệp">Doanh nghiệp</option>
+                            <option value="VIP">VIP</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label for="diaChi" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="diaChi" name="diaChi" required>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label class="d-block mb-1">Giới tính</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gioi" id="Nam" value="Nam" checked />
+                            <label class="form-check-label" for="Nam">Nam</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gioi" id="Nữ" value="Nữ" />
+                            <label class="form-check-label" for="Nữ">Nữ</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="themKH()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="sua" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sửa khách hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row">
+                    <div class="col-6 mt-4">
+                        <label for="hoten" class="form-label">Họ tên khách hàng <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="hoten" name="suahoten" required>
+                        <input type="hidden" name="suama" id="ma" />
+                    </div>
+                    <div class="col-6 mt-4">
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="suaemail" required>
+                    </div>
+
+                    <div class="col-6 mt-4">
+                        <label for="sdt" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="sdt" name="suasdt" required>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <label for="loaikh" class="form-label">Loại khách hàng</label>
+                        <select class="form-select" id="loaikh" name="sualoaikh" required>
+                            <option value="Du khách">Du khách</option>
+                            <option value="Doanh nghiệp">Doanh nghiệp</option>
+                            <option value="VIP">VIP</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label for="diaChi" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="diaChi" name="suadiaChi" required>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label class="d-block mb-1">Giới tính</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="suagioi" id="nam" value="Nam" />
+                            <label class="form-check-label" for="nam">Nam</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="suagioi" id="nu" value="Nữ" />
+                            <label class="form-check-label" for="nu">Nữ</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="suaKH()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="xoa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa khách hàng?</h5>
+            </div>
+            <div class="modal-body">
+                <p>Khách hàng <span class="fw-bold" id="tenKHXoa"></span> sẽ bị xóa.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="XoaKH">Xóa</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.btnSua').on('click', function () {
+            var id = $(this).data('id')
+            getKHById(id);
+        });
+
+        $('.btnXoa').on('click', function () {
+            var id = $(this).data('id')
+            var tenKH = $(this).data('kh');
+            $('#tenKHXoa').text(tenKH);
+            $('#XoaKH').off('click').on('click', function () {
+                xoaKH(id);
+            });
+        });
+
+        function getKHById(id) {
+            $.ajax({
+                url: '/Home/GetKHById',
+                type: 'GET',
+                data: { id: id },
+                success: function (res) {
+                    $('input[name="suama"]').val(res.data.MAKH);
+                    $('input[name="suahoten"]').val(res.data.HOTENKH);
+                    $('input[name="suasdt"]').val(res.data.DIENTHOAI);
+                    $('input[name="suadiaChi"]').val(res.data.DIACHI);
+                    $('input[name="suaemail"]').val(res.data.EMAIL);
+                    $('select[name="sualoaikh"] option:contains("' + res.data.LOAIKH + '")').prop('selected', true);
+                    $('input[name="suagioi"][value="' + res.data.GIOITINH + '"]').prop('checked', true);
+                }
+            })
+        }
+
+        function validation(kh) {
+            if (kh.HOTENKH === '' || kh.EMAIL === '' || kh.DIENTHOAI === '' || kh.DIACHI === '') {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return false;
+            }
+
+            // Check phone number format
+            var phoneRegex = /^0[0-9]{9}$/;
+            if (!phoneRegex.test(kh.DIENTHOAI)) {
+                alert('Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có 10 chữ số.');
+                return false;
+            }
+
+            // Check email format
+            var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+            if (!emailRegex.test(kh.EMAIL)) {
+                alert('Email không hợp lệ! Vui lòng nhập địa chỉ email đúng định dạng.');
+                return false;
+            }
+
+            return true;
+        }
+
+
+        function themKH() {
+            var kh = {
+                HOTENKH: $('[name="hoten"]').val(),
+                GIOITINH: $('[name="gioi"]:checked').val(),
+                DIENTHOAI: $('[name="sdt"]').val(),
+                DIACHI: $('[name="diaChi"]').val(),
+                EMAIL: $('[name="email"]').val(),
+                LOAIKH: $('[name="loaikh"]').val()
+            };
+
+            if (!validation(kh))
+                return;
+
+            $.ajax({
+                url: '/Home/ThemKH',
+                method: 'POST',
+                data: kh,
+                success: function (result) {
+                    if (result.success) {
+                        $('#them').modal('hide');
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function suaKH() {
+            var kh = {
+                MAKH: $('[name="suama"]').val(),
+                HOTENKH: $('[name="suahoten"]').val(),
+                GIOITINH: $('[name="suagioi"]:checked').val(),
+                DIENTHOAI: $('[name="suasdt"]').val(),
+                DIACHI: $('[name="suadiaChi"]').val(),
+                EMAIL: $('[name="suaemail"]').val(),
+                LOAIKH: $('[name="sualoaikh"]').val()
+            };
+
+            if (!validation(kh))
+                return;
+
+            $.ajax({
+                url: '/Home/SuaKH',
+                method: 'POST',
+                data: kh,
+                success: function (result) {
+                    if (result.success) {
+                        $('#sua').modal('hide');
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function xoaKH(id) {
+            $.ajax({
+                url: '/Home/XoaKH',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    if (result.success) {
+
+                        location.reload(true)
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+    </script>
+}

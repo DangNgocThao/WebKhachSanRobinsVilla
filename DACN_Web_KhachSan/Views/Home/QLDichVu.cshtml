@@ -1,0 +1,354 @@
+﻿@model IEnumerable<DACN_Web_KhachSan.Models.DICHVU>
+
+@{
+    ViewBag.Title = "QLDichVu";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+    int stt = 1;
+}
+
+<h2 class="text-center mt-4 mb-4">Danh Sách Dịch Vụ</h2>
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-8">
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#them"><i class="fa-solid fa-plus"></i> Thêm dịch vụ mới</button>
+        </div>
+        <div class="col-4">
+            <form method="post" class="form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="btnTim" name="tim" value="@ViewBag.tim">
+                    <button class="btn btn-outline-secondary" type="submit" id="btnTim"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mb-3">
+        @if (Model != null && Model.Count() > 0)
+        {
+            <div class="col table-responsive" style="height:500px">
+                <table class="table overflow-hidden table-bordered table-striped align-middle rounded table-hover">
+                    <tr class="table-secondary text-center">
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Hình
+                        </th>
+                        <th>
+                            Tên dịch vụ
+                        </th>
+                        <th>
+                            Đơn giá
+                        </th>
+                        <th>
+                            Mô tả
+                        </th>
+                        <th>
+                            Vị trí
+                        </th>
+                        <th>Hàng động</th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        int g = (int)item.DONGIA;
+                        <tr>
+                            <td class="text-center">
+                                @stt
+                            </td>
+                            <td>
+                                <img class="rounded" style="width:200px" src="~/Image/@item.HINH" />
+                            </td>
+                            <td>
+                                @item.TENDV
+                            </td>
+                            <td>
+                                @g.ToString("N0")
+                            </td>
+                            <td class="w-50">
+                                @item.MOTA
+                            </td>
+                            <td class="text-center">
+                                @item.VITRI
+                            </td>
+                            <td class="text-center">
+                                <a data-bs-toggle="modal" data-id="@item.MADV" data-bs-target="#sua" class="btn me-2 text-warning btnSua"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a data-bs-toggle="modal" data-id="@item.MADV" data-dv="@item.TENDV" data-bs-target="#xoa" class="btn text-danger btnXoa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        stt++;
+                    }
+
+                </table>
+            </div>
+        }
+        else
+        {
+            <h1 class="text-center">Không có dịch vụ nào!</h1>
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="them" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm dịch vụ mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row">
+                    <div class="col-12 mt-4">
+                        <label for="ten" class="form-label">Tên dịch vụ <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="ten" name="ten" required>
+                    </div>
+
+                    <div class="col-6 mt-4">
+                        <label for="gia" class="form-label">Đơn giá <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="gia" name="gia" required>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <label for="vitri" class="form-label">Vị trí <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="vitri" name="vitri" required min="1">
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label for="mota" class="form-label">Mô tả <span class="text-danger">*</span></label>
+                        <textarea class="form-control" style="height:100px" id="mota" name="mota" required></textarea>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label for="hinh" class="form-label">Hình <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="hinh" name="hinh" required accept="image/*">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="themDV()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="sua" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sửa dịch vụ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row">
+                    <div class="col-12 mt-4">
+                        <label for="suaten" class="form-label">Tên dịch vụ <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="suaten" name="suaten" required>
+                        <input type="hidden" name="suama" id="ma" />
+                    </div>
+
+                    <div class="col-6 mt-4">
+                        <label for="suagia" class="form-label">Đơn giá <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="suagia" name="suagia" required>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <label for="suavitri" class="form-label">Vị trí <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="suavitri" name="suavitri" required min="1">
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label for="suamota" class="form-label">Mô tả <span class="text-danger">*</span></label>
+                        <textarea class="form-control" style="height:100px" id="suamota" name="suamota" required></textarea>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label for="suahinh" class="form-label">Hình</label>
+                        <input type="file" class="form-control" id="suahinh" name="suahinh" required accept="image/*">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="suaDV()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="xoa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa dịch vụ?</h5>
+            </div>
+            <div class="modal-body">
+                <p>Dịch vụ <span class="fw-bold" id="tenDVXoa"></span> sẽ bị xóa.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="XoaDV" class="btn btn-danger">Xóa</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.btnSua').on('click', function () {
+            var id = $(this).data('id')
+            getDVById(id);
+        });
+
+        $('.btnXoa').on('click', function () {
+            var id = $(this).data('id')
+            var tenDV = $(this).data('dv');
+            $('#tenDVXoa').text(tenDV);
+            $('#XoaDV').off('click').on('click', function () {
+                xoaDV(id);
+            });
+        });
+
+        function getDVById(id) {
+            $.ajax({
+                url: '/Home/getDVById',
+                type: 'GET',
+                data: { id: id },
+                success: function (res) {
+                    $('input[name="suama"]').val(res.data.MADV);
+                    $('input[name="suaten"]').val(res.data.TENDV);
+                    $('input[name="suagia"]').val(res.data.DONGIA);
+                    $('input[name="suavitri"]').val(res.data.VITRI);
+                    $('textarea[name="suamota"]').val(res.data.MOTA)
+                }
+            })
+        }
+
+        function validation(dv) {
+            if (dv.TENDV === '' || dv.DONGIA === '' || dv.MOTA === '' || dv.VITRI === '') {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return false;
+            }
+
+            var regex = /^\d+$/;
+            if (!regex.test(dv.DONGIA)) {
+                alert('Giá tiền không hợp lệ!');
+                return false;
+            }
+
+            return true;
+        }
+
+
+        function themDV() {
+            var fileInput = $('#hinh')[0];
+            var file = fileInput.files[0];
+
+            var fileName = file ? file.name : '';
+            if (fileName === '') {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            var dv = {
+                TENDV: $('[name="ten"]').val(),
+                DONGIA: $('[name="gia"]').val(),
+                MOTA: $('[name="mota"]').val(),
+                VITRI: $('[name="vitri"]').val(),
+                HINH: fileName
+            };
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            for (var key in dv) {
+                formData.append(key, dv[key]);
+            }
+
+            if (!validation(dv))
+                return;
+
+            $.ajax({
+                url: '/Home/themDV',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.success) {
+                        $('#them').modal('hide');
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function suaDV() {
+            var fileInput = $('#suahinh')[0];
+            var file = fileInput.files[0];
+
+            var fileName = file ? file.name : '';
+
+            var dv = {
+                MADV: $('[name="suama"]').val(),
+                TENDV: $('[name="suaten"]').val(),
+                DONGIA: $('[name="suagia"]').val(),
+                MOTA: $('[name="suamota"]').val(),
+                VITRI: $('[name="suavitri"]').val(),
+                HINH: fileName
+            };
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            for (var key in dv) {
+                formData.append(key, dv[key]);
+            }
+
+            if (!validation(dv))
+                return;
+
+            $.ajax({
+                url: '/Home/suaDV',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.success) {
+                        $('#sua').modal('hide');
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+
+        function xoaDV(id) {
+            $.ajax({
+                url: '/Home/xoaDV',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    if (result.success) {
+                        location.reload(true)
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+@using DACN_Web_KhachSan.Models;
+@{
+    TAIKHOANKH kh = (TAIKHOANKH)Session["kh"];
+    TAIKHOANNV nv = (TAIKHOANNV)Session["nv"];
+    List<DATPHONG> dsdp = (List<DATPHONG>)Session["gh"];
+    string lastName = "";
+    if (kh != null)
+    {
+        lastName = kh.KHACHHANG.HOTENKH.Split(' ').LastOrDefault();
+    }
+    if (nv != null)
+    {
+        lastName = nv.NHANVIEN.HOTENNV.Split(' ').LastOrDefault();
+    }
+}
+<body style="background-image: url(/Image/pattern.jpg)">
+    <header class="header">
+        <div class="header-top p-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-2 d-flex justify-content-center align-items-center">
+                        <div class="me-2">
+                            <span style="color:#cf9d6c;font-size:20px;"><i class="fa-solid fa-house-user"></i></span>
+                        </div>
+                        <div>
+                            <a style="color:#6b6460;font-size:14px">20 Trần Bình Trọng, Phường 5, Thành phố Đà Lạt, Lâm Đồng</a>
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center align-items-center">
+                        <div class="me-2">
+                            <span style="color: #cf9d6c;font-size:20px;"><i class="fa-solid fa-envelope"></i></span>
+                        </div>
+                        <div>
+                            <a style="color:#6b6460;font-size:14px">Email của chúng tôi info@webhotel.vn</a>
+                        </div>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center align-items-center">
+                        <a href="/Home/Index">
+                            <img src="~/Image/logo.png" />
+                        </a>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center align-items-center">
+                        <h5 style="color: #cf9d6c">(016) 3667 0451</h5>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center align-items-center">
+                        @if (kh == null && nv == null)
+                        {
+                            <a class="btn btn-warning" href="/Home/DangNhap">ĐĂNG NHẬP</a>
+                        }
+                        else
+                        {
+                            if (kh != null)
+                            {
+                                <p><a href="/Home/TrangCaNhan"><i class="fa-solid fa-circle-user"></i> Xin chào, @lastName</a> | <br /> <a href="/Home/DangXuat" class="text-danger">Đăng xuất</a></p>
+                            }
+                            else
+                            {
+                                <p><i class="fa-solid fa-circle-user"></i> Xin chào, @lastName | <br /> <a href="/Home/DangXuat" class="text-danger">Đăng xuất</a></p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="menu-top">
+            <div class="container">
+                <ul class="menu-direct nav navbar d-flex justify-content-center align-items-center">
+                    @if (nv != null)
+                    {
+                        if (nv.LOAITAIKHOAN == "ql")
+                        {
+                            <li class="nav-item"><a class="nav-link " href="/Home/Index">Trang chủ</a> </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Quản lý
+                                </a>
+                                <ul class="dropdown-menu menu-top" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/Home/QuanLyPhong">phòng</a> </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/Home/QLDichVu">dịch vụ</a> </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/Home/QLNhanVien">nhân viên</a> </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/Home/QLKhachHang">khách hàng</a> </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a class="nav-link " href="/Home/SaoLuuPhucHoi">Sao lưu và phục hồi</a> </li>
+                            <li class="nav-item"><a class="nav-link " href="/Home/ThongKe">Thống kê</a> </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link " href="/Home/Index">Trang chủ</a> </li>
+                            <li class="nav-item"><a class="nav-link " href="/Home/ThongKe">Thống kê</a> </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link " href="/Home/Index">Trang chủ</a> </li>
+                        <li class="nav-item"><a class="nav-link " href="/Home/Booking">Đặt phòng</a> </li>
+                        <li class="nav-item"><a class="nav-link " href="/Home/LienHe">Liên hệ</a> </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="/Home/GioHang">
+                                Giỏ hàng&nbsp;
+                                @if (dsdp != null && dsdp.Count() > 0)
+                                {
+                                    <span>(@dsdp.Count())</span>
+                                }
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    @RenderBody()
+
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="container">
+                <div class="logo"><a><img src="~/Image/logo-footer.png" /></a></div>
+                <div class="row">
+                    <div class="col-4 footer-item">
+                        <div>
+                            <h6 class="title">VỀ CHÚNG TÔI</h6>
+                            <ul class="nav flex-column footer-list">
+                                <li class="nav-item"><a class="nav-link" href="#">FQA</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-4 footer-item">
+                        <div>
+                            <h6 class="title">THÔNG TIN</h6>
+                            <p class="address">140 Lê Trọng Tấn, Quận Tân Phú, TP Hồ Chí Minh</p>
+                            <p><a class="email" href="#">Info@Webhotel.Vn</a></p>
+                            <h4 class="title-infor">GỌI ĐẶT PHÒNG</h4>
+                            <h2 class="phonenumber">(016) 3667 0451</h2>
+                        </div>
+                    </div>
+                    <div class="col-4 footer-item">
+                        <div>
+                            <h6 class="title">XEM NHANH</h6>
+                            <ul class="nav flex-column footer-list">
+                                <li class="nav-item"><a class="nav-link" href="#">Điều khoản & Điều kiện</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Phương thức thanh toán</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <a id="backtotop" class="show"><i class="fa-solid fa-arrow-up-long"></i></a>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const datePairs = document.querySelectorAll('.date-pair');
+
+            datePairs.forEach(function (pair) {
+                const startDateInput = pair.querySelector('.checkin');
+                const endDateInput = pair.querySelector('.checkout');
+
+                const startDatePicker = flatpickr(startDateInput, {
+                    minDate: "today",
+                    onChange: function (selectedDates) {
+                        if (endDatePicker.selectedDates.length === 0 || endDatePicker.selectedDates[0] < selectedDates[0]) {
+                            endDatePicker.setDate(selectedDates[0]);
+                        }
+                        endDatePicker.set("minDate", selectedDates[0]);
+                    },
+                    "locale": "vn",
+                    dateFormat: "d-m-Y"
+                });
+
+                const endDatePicker = flatpickr(endDateInput, {
+                    minDate: "today",
+                    "locale": "vn",
+                    dateFormat: "d-m-Y"
+                });
+
+                endDatePicker.set("minDate", startDatePicker.selectedDates[0] || "today");
+            });
+        });
+    </script>
+    <script>
+        var btn = $('#backtotop');
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 300) {
+                btn.addClass('show');
+            } else {
+                btn.removeClass('show');
+            }
+        });
+
+        btn.on('click', function (e) {
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: 0
+            }, '1000');
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            $.ajax({
+                type: "GET",
+                url: "/Home/layTimeZone?timeZone=" + encodeURIComponent(clientTimeZone),
+            });
+        });
+    </script>
+</body>
+</html>

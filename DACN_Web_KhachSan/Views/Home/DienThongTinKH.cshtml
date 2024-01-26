@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "DienThongTinKH";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+}
+
+<h2 class="text-center mt-4 mb-4">Điền Thông Tin Đặt Phòng</h2>
+
+<div class="container">
+    <form class="row" method="post">
+        <input type="hidden" class="form-control" id="loaitt" name="loaitt" value="@ViewBag.Key" required>
+        <div class="col-6 mt-4">
+            <label for="hoten" class="form-label">Họ tên khách hàng <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="hoten" name="hoten" required>
+        </div>
+        <div class="col-6 mt-4">
+            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" name="email" required>
+            <span class="text-danger">@ViewBag.email</span>
+        </div>
+
+        <div class="col-6 mt-4">
+            <label for="sdt" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="sdt" name="sdt" required>
+            <span class="text-danger">@ViewBag.dt</span>
+        </div>
+
+        <div class="col-6 mt-4">
+            <label for="diaChi" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="diaChi" name="diaChi" required>
+        </div>
+
+        <div class="col-12 mt-4">
+            <label class="d-block mb-1">Giới tính</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gioi" id="Nam" value="Nam" checked />
+                <label class="form-check-label" for="Nam">Nam</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gioi" id="Nữ" value="Nữ" />
+                <label class="form-check-label" for="Nữ">Nữ</label>
+            </div>
+        </div>
+
+        <div class="col-12 mt-4 mb-4 text-end">
+            <button type="submit" class="btn btn-success">Tiếp tục</button>
+        </div>
+    </form>
+</div>

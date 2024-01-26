@@ -1,0 +1,264 @@
+﻿@model IEnumerable<DACN_Web_KhachSan.Models.PHONG>
+@using DACN_Web_KhachSan.Models;
+@{
+
+    ViewBag.Title = "ChiTietPhong";
+    Layout = "~/Views/Shared/_LayoutKhachSan.cshtml";
+    int page = ViewBag.page;
+    int tongpage = ViewBag.tongpage;
+}
+
+<section class="d-block">
+    <div class="container-fluid p-0 position-relative">
+        <div>
+            <img class="w-100" src="~/Image/bg-lienhe.jpg" alt="Alternate Text" />
+        </div>
+        <div class="text-center text-white position-absolute w-100 top-50 start-50 translate-middle">
+            <h1 style="font-size:68px">BOOKING</h1>
+        </div>
+    </div>
+</section>
+
+<section class="d-block">
+    <div class="container">
+        <form method="post" style="position: relative; margin-top: -80px; box-shadow: 0px 8px 17px 2px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12), 0px 5px 5px -3px rgba(0, 0, 0, 0.2); background-color: #faf6f1; padding: 35px">
+            <h2 class="text-center mb-5">PHÒNG CÓ SẴN</h2>
+            <div class="row date-pair">
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Check-in</label>
+                    <input id="checkin" name="checkin" class="checkin form-control" required value="@ViewBag.checkin" />
+                </div>
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Check-out</label>
+                    <input id="checkout" name="checkout" class="checkout form-control" required value="@ViewBag.checkout" />
+                </div>
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Người lớn</label>
+                    <select class="form-control" name="nguoilon" required>
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <option value="@i" @(ViewBag.nguoilon == i ? "selected" : "")>@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label class="mb-2 fw-bold">Trẻ em</label>
+                    <select class="form-control" name="treem" required>
+                        @for (int i = 0; i <= 10; i++)
+                        {
+                            <option value="@i" @(ViewBag.treem == i ? "selected" : "")>@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-secondary mt-4" style="padding: 10px 20px">Tìm phòng</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section>
+    <div style="padding-top: 100px">
+        <div class="container" style="padding: 0 15px">
+            <div class="row">
+                <div style="margin-bottom: 40px">
+                    <h2 style="margin-left: 5px; color: #cf9d6c; display: inline; font-size: 30px; font-weight: 600; line-height: 30px;">@ViewBag.LoaiPhong.TENLOAI</h2>
+                </div>
+
+                <div class="col rounded">
+                    <div class="row bg-white border rounded p-3">
+                        <div class="col-6">
+                            <img src="~/Image/@ViewBag.LoaiPhong.HINH" alt="" class="w-100 rounded-3" />
+                        </div>
+                        <div class="col-6 d-flex justify-content-lg-around flex-column">
+                            <div class="form-group">
+                                <label class="fs-5 fw-bold">TIỆN NGHI</label>
+                                <hr />
+                                <div class="row">
+                                    @foreach (var item in ViewBag.TienNghi)
+                                    {
+                                        <div class="col-4">
+                                            <span class="fw-bold">✓</span> @item.TENTIENNGHI
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="fs-5 fw-bold">MÔ TẢ</label>
+                                <hr />
+                                <div>@ViewBag.LoaiPhong.MOTA</div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        <div class="row bg-white border rounded mt-4 mb-4 p-3">
+                            <div class="col-12">
+                                <div>
+                                    <b>Danh sách phòng theo loại</b>
+                                    <hr />
+                                </div>
+                                <div>
+                                    @foreach (var item in Model)
+                                    {
+                                        int g = (int)item.GIA;
+                                        <div class="d-flex mb-4 rounded p-3" id="room-@item.MAPHONG" style="box-shadow: rgba(0, 0, 0, 0.15) 2px 0px 30px 0px; grid-gap: 20px">
+                                            <div style="width:400px">
+                                                <img src="~/Image/@item.HINH" alt="" class="rounded" style="max-width: 100%; height: auto; object-fit: cover;" />
+                                            </div>
+                                            <div class="w-100 d-flex flex-column justify-content-between">
+                                                <h4 class="mb-3">@item.TENPHONG</h4>
+                                                <div class="d-flex align-items-center gap-4 ">
+                                                    <p><i class="fa-solid fa-user"></i> Người lớn: @item.NGUOILON</p>
+                                                    <p><i class="fa-solid fa-child"></i>   Trẻ em: @item.TREEM</p>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-4 ">
+                                                    <p><i class="fa-solid fa-expand"></i> @item.DIENTICH m<sub style="top:-0.5rem">2</sub></p>
+                                                    <p><i class="fa-solid fa-bed"></i> @item.SOGIUONG</p>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div>
+                                                        Giá phòng
+                                                        <p>
+                                                            <span style="color:#F2A900; font-size:20px; font-weight:bold; line-height:normal">@g.ToString("N0") VNĐ</span>  / Ngày
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        @{
+                                                            bool flag = false;
+                                                            if (Session["gh"] != null)
+                                                            {
+                                                                foreach (var p in (List<DATPHONG>)Session["gh"])
+                                                                {
+                                                                    if (p.MAPHONG == item.MAPHONG)
+                                                                    {
+                                                                        <a class="btn btn-secondary disabled">Chọn phòng</a>
+                                                                        flag = true;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+
+
+
+                                                        }
+
+                                                        @if (flag == false)
+                                                        {
+                                                            <a onclick="selectRoom(@item.MAPHONG)" class="btn btn-warning">Chọn phòng</a>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <h2 class="text-center m-4">Không tìm thấy phòng nào phù hợp</h2>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <form class="col mb-4 text-center" id="paginationForm" method="post" action="@Url.Action("ChiTietPhong", "Home")">
+                <input type="hidden" name="checkin" value="@ViewBag.checkin" />
+                <input type="hidden" name="checkout" value="@ViewBag.checkout" />
+                <input type="hidden" name="nguoilon" value="@ViewBag.nguoilon" />
+                <input type="hidden" name="treem" value="@ViewBag.treem" />
+
+                @if (page != 1)
+                {
+                    <button type="button" class="btn btn-secondary me-2" onclick="submitFormWithAction('page',@page - 1)">‹</button>
+                }
+                @for (int i = 1; i <= tongpage; i++)
+                {
+                    <button type="button" class="btn @(page == i ? "btn-success" : "btn-secondary") me-2" onclick="submitFormWithAction('page', @i)">@i</button>
+                }
+                @if (page != tongpage)
+                {
+                    <button type="button" class="btn btn-secondary" onclick="submitFormWithAction('page',@page + 1)">›</button>
+                }
+            </form>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script>
+        function convertDateFormat(inputString) {
+            var parts = inputString.split("-");
+            var outputDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            const offset = outputDate.getTimezoneOffset()
+            date = new Date(outputDate.getTime() - (offset * 60 * 1000))
+            return date.toISOString().split('T')[0];
+        }
+
+        function selectRoom(maphong) {
+            var checkinValue = $('#checkin').val();
+            var checkoutValue = $('#checkout').val();
+            var checkinDate = convertDateFormat(checkinValue);
+            var checkoutDate = convertDateFormat(checkoutValue);
+
+            var ngayHienTai = new Date();
+            const offset = ngayHienTai.getTimezoneOffset()
+            date = new Date(ngayHienTai.getTime() - (offset * 60 * 1000)).toISOString().split('T')[0];
+
+            var dp = {
+                NGAYDAT: date,
+                NGAYNHANPHONG: checkinDate,
+                NGAYTRAPHONG: checkoutDate,
+                MAPHONG: maphong,
+            };
+
+            $.ajax({
+                url: '/Home/chonPhong',
+                method: 'POST',
+                data: dp,
+                success: function (result) {
+                    if (result.success) {
+                        alert(result.message);
+                        location.reload(true);
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    console.error('Có lỗi xảy ra khi gửi dữ liệu đến máy chủ.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function submitFormWithAction(action, page) {
+            var form = document.getElementById('paginationForm');
+
+            form.querySelectorAll('input[name="action"]').forEach(e => e.remove());
+            form.querySelectorAll('input[name="page"]').forEach(e => e.remove());
+
+            var actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'action';
+            actionInput.value = action;
+
+            var pageInput = document.createElement('input');
+            pageInput.type = 'hidden';
+            pageInput.name = 'page';
+            pageInput.value = page;
+
+            form.appendChild(actionInput);
+            form.appendChild(pageInput);
+            form.submit();
+        }
+    </script>
+}
